@@ -1,0 +1,11 @@
+*.aux
+*.log
+*.bbl
+*.lof
+*.lot
+*.xml
+*.gz
+*.toc
+*.bcf
+*.blg
+*blx.bib
