@@ -1,0 +1,84 @@
+% HCI Group Konstanz Seminar Template
+%
+% ATTENTION: This template was designed to fit the most common requirements for different types of reports (e.g., Seminar to the Project or Project Report). However, if you feel the need to add an extra component or layout feature please talk to your advisor. Please do not change anything on this template unless it is explicitly allowed or agreed with your advisor. However, it is allowed to add packages that do not alter the design/layout of this template.
+%
+
+\documentclass[10pt, paper=a4, parskip, oneside]{scrreprt}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{hciknseminar}
+\usepackage[ngerman, english]{babel} % Spell checking (Using ngerman for german spell checking). The last language is the standard language for the document.
+\usepackage{enumitem}
+\bibliography{bibliography} % Reference to bibliography.bib file
+
+
+
+% ============= Abstract =============
+\abstract{
+Beautiful Study Design that works perfectly. No Doubt.
+}
+
+% ============= Document =============
+\begin{document}
+	% =========== Title page ============
+	\begin{titlepage}
+		\begin{center}
+			{\LARGE \textbf{Ego OR Exo:\\Comparing Visual Perspectives on Guidance Visualisations for Motor Learning}}
+			\\[1cm]
+			{\Large \textbf{Masterarbeit}}
+			\\[1cm]
+			{\Large vorgelegt von}
+			\\[0.5cm]
+			{\LARGE \textbf{Stefan Paul Feyer}}
+			\\[0.5cm]
+			{\Large an der}
+			\\[0.5cm]
+			\includegraphics[width=0.4\textwidth]{figures/unisignet.pdf}
+			\\[1cm]
+			{\Large \textbf{Sektion Mathematik und Naturwissenschaft}}
+			\\[1cm]
+			{\Large \textbf{Fachbereich Informatik und Informationswissenschaft}}
+			\\[2cm]
+			\begin{minipage}[c]{0.8\textwidth}
+				\begin{description}[style=multiline]
+					\item {\Large \textbf{1.Gutachter:} Prof. Dr. Harald Reiterer}
+					\item {\Large \textbf{2.Gutachter:} Dr. Karsten Klein}
+				\end{description}
+			\end{minipage}
+			\vfill
+			{\LARGE \textbf{Konstanz, 2021}}
+		\end{center}
+	\end{titlepage}
+
+% Abstract
+\makeabstract
+% Table of contents
+\tableofcontents
+\addcontentsline{toc}{chapter}{Contents} % Add contents to table of contents
+% List of Figures
+\listoffigures
+\addcontentsline{toc}{chapter}{\listfigurename} % Add list of figures to table of contents
+% List of Tables
+\listoftables
+\addcontentsline{toc}{chapter}{\listtablename} % Add list of tables to table of contents
+% Prepare chapters
+\clearpage
+\setcounter{romanPages}{\value{page}} % Update variable for roman pages
+\pagenumbering{arabic} % Turn on page numbering again
+
+\include{c1_introduction}
+\include{c2_theoretical_background}
+\include{c3_studysetting_conduction}
+\include{c4_study_evaluation}
+\include{c5_outlook_conclusion}
+\include{c6_attachments}
+
+% =========== Bibliography ===========
+\chapter*{References} % Set custom bibliography heading
+\renewcommand{\thepage}{\roman{page}} % Use roman page numbers again
+\setcounter{page}{\theromanPages} % Set the page counter
+\defbibheading{bibempty}{} % Remove standard bibliography heading
+\printbibliography[heading=bibempty]
+\addcontentsline{toc}{chapter}{References} % Add bibliography to table of contents
+
+\end{document}
