@@ -13,10 +13,13 @@
 \bibliography{bibliography} % Reference to bibliography.bib file
 
 % ============= Commands =============
+\usepackage{float} % for H, remove of anything breaks
+
+
 \newcommand{\exgo}{E(x$\mid$g)o}
 \newcommand{\todo}[1]{\textcolor{red}{todo: #1}}
 
-\usepackage{float} % for H, remove of anything breaks
+
 % ============= Abstract =============
 \abstract{
 Motor Learning in Mixed Reality prooved to be good. But view reseach in the influence of the perspective on guidance visualisation. This work proposes a study to investigate this. Task is handling physical load. will enable designers of MR ML systems to base their work on on empirical data.
@@ -72,12 +75,13 @@ Motor Learning in Mixed Reality prooved to be good. But view reseach in the infl
 
 \include{c1_introduction}
 \include{c2_theoretical_background}
-%\include{c2-5_delimitation}
 \include{c3_studysetting_conduction}
 \include{c4_study_evaluation}
 \include{c5_outlook_conclusion}
-\include{c6_attachments}
 
+\clearpage
+\markboth{Appendix}{}
+\include{c6_attachments}
 % =========== Bibliography ===========
 \chapter*{References} % Set custom bibliography heading
 \renewcommand{\thepage}{\roman{page}} % Use roman page numbers again
