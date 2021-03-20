@@ -3,21 +3,23 @@
 % ATTENTION: This template was designed to fit the most common requirements for different types of reports (e.g., Seminar to the Project or Project Report). However, if you feel the need to add an extra component or layout feature please talk to your advisor. Please do not change anything on this template unless it is explicitly allowed or agreed with your advisor. However, it is allowed to add packages that do not alter the design/layout of this template.
 %
 
-\documentclass[10pt, paper=a4, parskip, oneside]{scrreprt}
+\documentclass[11pt, paper=a4, parskip, oneside]{scrreprt}
 \usepackage[T1]{fontenc}
 \usepackage[utf8]{inputenc}
 \usepackage{hciknseminar}
 \usepackage[ngerman, english]{babel} % Spell checking (Using ngerman for german spell checking). The last language is the standard language for the document.
 \usepackage{enumitem}
+\usepackage{wrapfig}
 
 \bibliography{bibliography} % Reference to bibliography.bib file
 
 % ============= Commands =============
-\usepackage{float} % for H, remove of anything breaks
+\usepackage{float} % for H, remove if anything breaks
 
 
 \newcommand{\exgo}{E(x$\mid$g)o}
 \newcommand{\todo}[1]{\textcolor{red}{todo: #1}}
+\newcommand{\combi}{EGO \& EXO}
 
 
 % ============= Abstract =============
@@ -79,9 +81,7 @@ Motor Learning in Mixed Reality prooved to be good. But view reseach in the infl
 \include{c4_study_evaluation}
 \include{c5_outlook_conclusion}
 
-\clearpage
-\markboth{Appendix}{}
-\include{c6_attachments}
+
 % =========== Bibliography ===========
 \chapter*{References} % Set custom bibliography heading
 \renewcommand{\thepage}{\roman{page}} % Use roman page numbers again
@@ -89,5 +89,6 @@ Motor Learning in Mixed Reality prooved to be good. But view reseach in the infl
 \defbibheading{bibempty}{} % Remove standard bibliography heading
 \printbibliography[heading=bibempty]
 \addcontentsline{toc}{chapter}{References} % Add bibliography to table of contents
-
+\appendix
+\include{c6_attachments}
 \end{document}
