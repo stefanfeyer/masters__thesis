@@ -1,0 +1,277 @@
+\chapter{\exgo - Design and Implementation}
+\label{chapter:system}
+The last chapter describes an experiment to investigate the influence of the visual perspective on Motor Learning in Virtual Reality. For the conduction of this study, a system is necessary. This system is called \exgo. This section elucidates the development of \exgo. The starting point is the creation of a self-perception of the learner. 
+Section~\ref{sec:selfperception} describes how the learner gets a digital body (avatar) in Virtual Reality.
+In section~\ref{sec:artefacts} the physical artefacts are added with which the learner will interact. Then, the GVs are added in section~\ref{sec:gv}. Subsequently, section~\ref{sec:perspectives} describes the implemented of th VPs, which in the study serve as the conditions. With the learners avatar, physical artefacts, the GVs and the study conditions implemented, \exgo\ is able to teach Motor Learing in VR. To measure the performance of the study participants, the measures from section~\ref{sec:measures} are implemented and described in section~\ref{sec:logging} and~\ref{sec:quali_logging}. 
+Finally, section~\ref{sec:limitations} evinces the limitations of \exgo.
+After \exgo\ is complete, all actions to perform the study are known. These actions are assembled with the experiment design and the study procedure can be described. The study procedure is depicted in section~\ref{sec:procedure}.
+
+\section{Self-Perception}
+\label{sec:selfperception}
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.7\textwidth]{figures/hardware.png}
+	\caption[Hardware]{Top left: Valve Index, top right: base-station, bottom left: Vive Tracker 2, bottom right: Vive Tracker straps.}
+	\label{fig:hardware}
+\end{figure}
+
+There are various options of devices to dive into Virtual Reality. In the preceding project report, several devices have been evaluated, and the decision was made for the Valve Index\footnote{\todo{todo}} (figure~\ref{fig:hardware} top left), because of its refresh rate, screen solution, filed of view and the possibility to wear glasses underneath the head-mounted display (HMD). To determine the position and orientation of the HMD, the so-called Lighthouse\footnote{lighthouse} is utilised. A Lighthouse consists of at least two base-stations\footnote{base stations} (figure~\ref{fig:hardware} top right). The base-stations are placed at the opposite corners of a room and span the tracking volume. To improve the tracking and for the avoidance of untracked areas, e.g. under a table, \exgo\ uses four base-stations, one for each corner fo the room, to span the Lighthouse.\\
+Till now, the learner can move in an empty virtual world, seeing nothing. The next step is to replace the empty virtual world with a meaningful environment. For this, the Game Engine Unity 3D\footnote{Unity} is used. In Unity, a basic room was created. Four light yellow walls, a parquet floor and unidirectional lighting. The parquet floor serves a purpose: it has a structure with frequent straight lines, making it later easier to align the artefacts the learner will interacti with. The room is kept simple not to distract the participant of the study.\\
+The next step is to add the learner's body to the empty room. To achieve this, the learners body needs to be tracked. In the preceding project report, multiple full-body tracking systems were compared. The decision was made for Vive Trackers\footnote{Vive trackers} (figure~\ref{fig:hardware} bottom left), because cease of coordinate system matching, the lower latency and less work-intensive calibration process. The learner wears six Vive Tracker in total, comare figure~\ref{fig:tracker_placement}. Five of them plus the HMD are necessary for the full-body tracking of the learner. The remainder is necessary for RM (6.1), which is later explained in section~\ref{sec:logging}. Two trackers are located at Dorsum pedis\footnote{\label{fn:latin}Latin description: Dr. med. univ. Kilian Roth} (compare figure~\ref{fig:tracker_placement} left), two trackers are located at Dorsum manus\footref{fn:latin} (compare figure~\ref{fig:tracker_placement} middle). One  tracker is located at Articulatio lumbosacralis\footref{fn:latin} (compare figure~\ref{fig:tracker_placement} right). The trackers are attached to the learner by special Vive Tracker Straps\footnote{\href{https://www.google.com/search?q=vive+tracker+straps}{https://www.google.com/search?q=vive+tracker+straps}, accessed 10.03.2021} (figure~\ref{fig:hardware} bottom right).\\
+The Lighthouse tracks the Vive Trackers and HMD, which send their position to the PC (simplified). Here, SteamVR\footnote{\href{https://store.steampowered.com/app/250820/SteamVR/}{https://store.steampowered.com/app/250820/SteamVR/}, accessed 21.03.2021} receives the information and forwards it to Unity. In Unity, the SteamVR Plugin\footnote{\href{https://assetstore.unity.com/packages/tools/integration/steamvr-plugin-32647}{https://assetstore.unity.com/packages/tools/integration/steamvr-plugin-32647}} provides the information in a workable condition. The tracking information is now about to be translated into a rendering of a human-like avatar at the position of the learner's body. This requires several steps.\\First, an avatar is imported. To create the avatar, Reallusion Character Creator 3 3\footnote{\href{https://www.reallusion.com/character-creator/}{https://www.reallusion.com/character-creator/}} was used. To match the gender of the participant, a male and a female character were created, wearing the same clothes. Based on the demographic questionnaire, the gender can be set, and the participant will see an avatar complying with the participant's gender.\\
+Secondly, the tracker's position and orientation in the tracking volume have to be translated into human movements that meet the learner's movements. This is achieved by Inverse Kinematics (IK).\\
+\begin{figure}[htb]
+	\centering
+	\includegraphics[width=\textwidth]{figures/trackerPlacement.png}	
+	\caption[Tracker placement]{Left: front view, middle: side view, right: back view}
+	\label{fig:tracker_placement}
+\end{figure}
+Short excursion: IK arises from the field of robotics. A robot arm consists of limbs and joints. Each limb has a specific length, and each joint has a specific range of angles to move. The length and angles are called rules. Given an endpoint the robot has to reach with the most outer limb, the angle of each joint can be caluclated with the rules. This process can be mapped to a human body, too.\\
+
+Unity provides a third-person plugin called FinalIK\footnote{\href{https://assetstore.unity.com/packages/tools/animation/final-ik-14290}{https://assetstore.unity.com/packages/tools/animation/final-ik-14290}, accessed 21.03.2021} that is capable of the calculations in question. On the one hand, FinalIK is powerful and unrivalled in functionalty compared to other IK tools and though influenced the choice to use Unity for \exgo\ heavily. On the other hand, to match the needs of the study, extensive adjustments were necessary. The preceding project report gives a detailed description of the process, while here, a summary is depicted. The main task is to transfer the information from SteamVR to FinalIK in a meaningful way so that FinalIK animates the learner's body faithfully.\\
+SteamVR registers the Vive Tracker in the order they are switched on. To increase the reliabliity of \exgo, a script was created that assigns the tracker by the hardware ID. The trackers are then assigned to a script called VRIKCalibrationController. The VRIKCalibrationController matches the tracker with the avatar and resizes the avatar to the learner's height. FinalIK is constructed to work with controllers in the user's hands. In \exgo, the study participant needs the hands to interact with the box, though the controllers are replaced with Vive Tracker on the back of the hands. Shifting the reference points of the hands yields a faithful representation of the learner's hands. The feet needed adjustments similarly. Finally, FinalIK is able to solve the movements. Solving is the process of translating the tracker information into an animated avatar. For clearification, the complete rendering pipeline exemplary for the hip of the learner is attached in appendix~\ref{a:studentRenderingPipeline}.\\
+VRIK requires calibration before use. For calibration, the person attached with the trackers needs to perform a T-Pose in a specific direction. To ease the calibration process, a mirror is placed in the room. The participant can be asked to look into the mirror and expand the arms, leading to the participant's correct orientation during the calibration process. Immediate with the calibration, the mirror disappears.
+After the calibration, the system is ready to start with the task. Because the participant is now standing in front of the mirror, the position in front of the mirror is chosen as the starting point and endpoint of every task.\\
+With the steps implemented in this section, the outcome results in a faithful representation of a the learner, see figure~\ref{fig:selfPerception}
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=\textwidth]{figures/selfPerception.png}	
+	\caption[\todo{Self Perception}]{\todo{Self Perception, ref this}}
+	\label{fig:selfPerception}
+\end{figure}
+
+\section{Physical Artefacts}
+\label{sec:artefacts}
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=\textwidth]{figures/artefacts.png}	
+	\caption[Physical artefacts]{Top left: real-world box, bottom left: digital box, middle top: real-world table, middle bottom: digital table, right top: physical scale, right bottom digital scale.}
+	\label{fig:artefacts}
+\end{figure}
+Till now, the learner can see the own body in an empty room. The task includes the handling of physical load on a table and a scale. The creation of table, scale and the box which will serve as physical load, starts with the constuction of them - physically and digitally. Figure~\ref{fig:artefacts} shows the physical and digital versions of the box (left), table (middle) and scale (right).\\
+The first version of \exgo\ used a cardboard box (27cm x 26cm x 24cm) as physical load. During the development, it became clear that the cardboard box's size was too small and light to serve as a physical load. To determine a suitable size, several boxes of different dimensions were tested. With nine different boxes, a set of sub-tasks were performed. The major insight from this test was that the length of the box's sides should be different to see the direction of the box visually. Furthermore, the box should be perceived as physical load by having a reasonable size and a certain weight. Simultaneously, the box should not be too heavy and thereby limit the study participants to strong humans or be a threat to the participants' bodies. The sizes were set for 35cmx30cmx25cm. The measures of the box differentiate by 5cm in every dimension. This makes it clear to see the orientation of the box. The final box was constructed from three-layered wood with a strength of 27mm. The resulting weight was 5.8kg. To evaluate the weight of the box, one male person\footnote{A larger evaluation was not possible because of the COVID-19 pandemic. Evaluation with at least one female person is desireable} was asked to perform every all sub-tasks. The person is a computer science PhD student and experienced with several sports activities. Observations revealed no incidences that contradict to use the box as physical load: the box could be safely holded in hands, and it was visible that the person changed the own posture during the handling of the box to perform the movements more egonomically. The posture change is interpreted that the box is percieved as "load". The person rated the weight as "ok". He/she had no problems moving the box. The box was painted in three high contrast colours: black, white and red. Each opposite was painted in the same colour. The painting facilitates the visual perception of the orientation of the box. The digital pendant of the box is a cube in the same colour and size. To translate the physical box's position and orientation to the virtual one, a Vive Tracker is attached to the box and fixated with a screw. On the plus side of using a screw is the prevention of any relocation of the tracker. The downside is that tremors caused by placing the box on, for example, the table, are transferred directly into the tracker. This causes the tracker to lose tracking. To interrupt the transfer of tremors, shock-absorbing insulation is placed between the tracker and the box.\\
+During the development of \exgo\ an office table (120cm x 60cm x 72cm) was used. The digital pendant to the physical table is a plate in the same size and colour of the tabletop. The position and orientation of the table is assessed by a Vive Tracker. Unfortunately, the tracker was placed on the top of the table inside the working area, where the box will be placed and shifted during the tasks. To shift the tracker out of the working area, a new tabletop was constructed. Becasue the used office table was too narrow, the width is increased by 10 cm. The new tabletop is out of three-layered wood, with an additional increased size of 6cm in length and width (126cm x 76cm instead of 120cm x 60cm), to provide additional space for the tracker. The tracker is attached on the most outer edge, though out of the working area. To prevent tremors passing from the table into the tracker, shock-absorbing insulation is applied between tracker and tabletop.\\
+The last artefact to create is the scale. The scale is a waypoint in the room where the participants perform lift and lower to the ground. The scale is a rectangular plate of 45cmx45cm so that the box can be placed on the scale easily. To shift the tracker out of the area where the box will be placed, the plate is extended by 5cm. The tracker is attached to the most outer edge of the extension with a screw and shock-absorbing insulation. The digital pendant is a plate with the exact dimensions of the physical plate, excluding the extended area.\\
+
+\section{Study Setting}
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=\textwidth]{figures/study_setting.png}
+	\caption[study setting]{study setting}
+	\label{fig:study_setting}
+\end{figure}
+Meanwhile, \exgo\ consists out of a room, an avatar representing the learner, table, box and scale. In the following, an overview about the alignment of these elements is given. Figure~\ref{fig:study_setting} shows the real-world room in which the study is conducted. Figure~\ref{fig:learner_positions} depict all positions that are described in the task description (compare table~\ref{tab:tasks}). The outer line represents the Lighthouse or tracking volume, which is approximately 400cmx400cm. On the left wall, the mirror is located. In front of the mirror, the starting and end position of the box is seated. Beside the box is the position mirror, the start and endpoint of the learner. The table is placed int the middle of the wall to the left of the mirror. Around the table, the positions table centre, table right and table left is located. At the opposite wall of the mirror, the scale is placed. In front of the scale is the position scale.
+\begin{figure}[htb]
+	\centering
+	\includegraphics[width=\textwidth]{figures/learner_positions.png}
+	\caption[learner positions]{learner positions}
+	\label{fig:learner_positions}
+\end{figure}
+
+\section{Guidance Visualisation}
+\label{sec:gv}
+The next task is to add the GV to \exgo, which the learner will mimic. The GV is an avatar like the learner's avatar, with the difference that the motion of the GV is driven by the pre-recorded tasks 1-3. The recording of the tasks was also performed with \exgo. To use \exgo as a recorder, a copy of all trackers and the HMD is created. This recorder-copy is packed as one GameObject with the trackers as children. The parent GameObject is recorded during the performance of the movements. For the GV, a similar GameObject as the recorder is created and serves as Input for VRIK. A detailed description is given in the project report. In this section, the main points of the process are described: the recording of the movements and the resizing of the GV to the size of the learner.\\
+
+The movements in the task have to be performed ergonomically. The measures to evaluate ergonomic movements are the RM. To serve as a strong baseline, a professional for ergonomic movements should record the movements. Because of the COVID-19 pandemic, all attempts to record the movements by a professional failed. The whole laboratory was transported to a private facility, but because of temporal issues, the recording with the professional could not take place. Then the laboratory was transported to another private facility. Unfortunately, to the room in which the laboratory was set up was not suitable for the recordings. The recorded movements by the professional had to be abandoned because of isuffisient tracking coverage causing jitter. The laboratory was transported back to the university. Eventually, I were trained by a physiologist and recorded the movements by myself. The final recordings were examined by the physiologist. Overall, the movements were rated by the physiologist as "by and large correct". The back is not always straight or at the correct angle. In task 2 during a push and in task 3 during a pull, the feet are misplaced.\\
+
+With the recording of the tasks at hand, the GV can be animated. For the ego-centric VP it is inevitable, that GV and learner having the exact same size, else the learner cannot percept the GV correctly. Furthermore, the table, box, and scale must not resize. The solution is to record two sets of object synchronised. The first set contains the objects that have to be resized, namely the GV, the second set contains objects that must not be resized, namely the box, table and scale. The recordings were synchronised by a script, the playback of the animations in \exgo, too. The resizing of the GV takes place in three steps, compare figure~\ref{fig:resize}. First, the learner and the GV are calibrated. Then the height difference $\Delta y$ is measured between the learner and GV. In the last step, FinalIK is removed from the GV, the animated GameObject containing all trackers is removed, then FinalIK reattached and calibrated with the resizes GameObject containing all trackers. Thus the learner and the GV have the same size.
+\begin{figure}[htb]
+	\centering
+	\includegraphics[width=\textwidth]{figures/resize.png}
+	\caption[Resizing the GV to the learner height.]{Resizing the GV to the learner height.}
+	\label{fig:resize}
+\end{figure}
+
+\section{Perspectives}
+\label{sec:perspectives}
+The next thing to add to \exgo\ are the VP the study will compare, namely the ego-centric VP, the exo-centric VP and the ego \& exo-centric VP.\\
+\begin{figure}[htb]
+	\centering
+	\includegraphics[width=\textwidth]{figures/perspectiveEGO.png}
+	\caption[\todo{ego persp}]{\todo{ego persp}}
+	\label{fig:ego}
+\end{figure}
+The ego-centric VP requires, besides the learner, one ego-centric GV. The learner needs to stay inside the GV. This is achieved by the speed-mechanic. The learner's distance to the GV is calculated with the help of the tracker at the hip of the learner and the recorded tracker at the hip of the GV. The positions of the trackers at the hip are projected to the floor. The projection to the floor is necessary because the speed-mechanic would apply if the GV bends the knees during lift and lower: if the GV bends the knees and the learner does not, the distance will increase between the two trackers in the y-component. This restricts the learner's ability to perform an error: if the learner does not bend the knees during lift and lower, the GV would stop and remind the learner to bend the knees. To investigate if the learner could percept to bend the knees, the learner must be allowed to make the error. This is why the speed-mechanic relies on the distance between the two projected points on the floor.\\
+Additionally, the distance finds application in another functionality. In the ego-centric VP, the learner is located inside the teacher. This means that the learner's viewport is inside the head of the GV and let the learner see the inside of the GV head. This leads to distraction by the partly rendered inner head. The solution is to remove the head rendering if the distance is below $ETD_{max}$ and reinitiate the rendering above $ETD_{max}$. The rendering is removed by replacing the materials array of the head with a material array that contains only invisible materials.\\
+\begin{figure}[htb]
+	\centering
+	\includegraphics[width=\textwidth]{figures/perspectiveEXO.png}
+	\caption[\todo{exo persp}]{\todo{exo persp}}
+	\label{fig:exo}
+\end{figure}
+In the exo-centric VP, four exo-centric GVs are located around the learner. The positions of the exo-centric GV were determined after the task was recorded. The difficulty is to determine proper positions of the exo-centric GVs. First, at any point in time during every task's performance, the learner must be able to see a GV by only turning the head. Secondly, the GV and the learner should not move through a table or scale of another GV. The solution to the first part in informed by Chua et al.~\cite{thaichichua}. Chua et al. chose four representation that are in front, behind, left and right of the central learner. The latter proved to be impossible if the exo-centric representations should be near enough to be observed by the learner. This happens rarely and only during the sub-task carry, but is a limitation of \exgo. The GV needs to be shifted too far away from the learner not to cross other GVs artefacts. In a distance in which no crossing occurs, the movements are barely visible to be mimicked correctly. The exo-centric representations were then placed in a distance that allows being observed by the learner, and the learner can access all positions without standing in an digital artefact of another GV. The exo-centric GVs are positioned as follows. Standing at table center and looking in the direction of the table: the GV to the left is shifted by two meters to the left, the GV to the right, two meters to the right. The GV in front is shifted by 1.5 meters to the front. The GV in the back is shifted 3 meters to the back. Figure~\ref{fig:multireppositions} shows the positions of the exo-centric VP. Additionally, to the exo-centric GVs a virtual copy of the student needs to be rendered. The same values shift the virtual copy of the learner. In the last VP, the ego \& exo-centric VP, the learner has an ego-centric VP and the exo-centric GV with the corresponding virtual copies of the learner. The implementation of copying the learner and the GV and shifting them to the position is rather complex and described in detail in the project report.\\
+\begin{figure}[htb]
+	\centering
+	\includegraphics[width=\textwidth]{figures/positions.png}
+	\caption[Positions of representations.]{Position of representations.}
+	\label{fig:multireppositions}
+\end{figure}
+\begin{figure}[htb]
+	\centering
+	\includegraphics[width=\textwidth]{figures/perspectiveEGOEXO.png}
+	\caption[\todo{ego exo persp}]{\todo{ego exo persp}}
+	\label{fig:egoexo}
+\end{figure}
+
+\section{Quantitative Data Aquisition}
+\label{sec:logging}
+Section~\ref{sec:measures} defined the measures that are necessary to answer the research questions. \exgo\ must be capable of assessing all measures. This section explains how \exgo\ assesses the measures. An overview about all measures is listed in table~\ref{tab:logging_detail}. Table~\ref{tab:logging_detail} lists the logging ID, a description of what the measurement is measuring, the unit in which the measurement is measured and for which research question the measurement ist assessed. The quantitative data acquisition can be divided into several classes: (i) accuracy measurements (1-5), (ii) ergonomic measurements (6), (iii) focus measurement (7) and (iv) time measurement (9). In the following, (i)-(iv) are explained in detail.
+\begin{table}[H]
+	\centering
+	\includegraphics[width=\textwidth]{figures/logging_detail.png}
+	\caption[logging detail]{Detailed overview of logs produced by \exgo\ per frame. L: learner, GV guidance visualistion, ED: euclidean distance. *head position and rotation is biased in exo-centric conditions because of multiple GV the L can focus on. **All trackers are logged for backup reasons: after the study is conducted a measurement can become interesting that was not of imporance before. With these values any measurement can be calculated post-study.}
+	\label{tab:logging_detail}
+\end{table}
+
+\subsection{(i) Accuracy Measurements}
+The accuracy measurements assess the discrepancy between the movements of the learner and the movements of the GV. Accuracy measurements are subdivided into distance-based measures and angle-based measure. Distance-based measures rely on the Euclidean distance between the learner's body parts and the body parts of the GV. The reference point for the body part is the tracker, which is attached to the body part. The body parts are: hip, left hand, right hand, left foot, right foot and head. The distance between the learner's box and the box of the teacher is an accuracy measurement, too. Likewise the body parts, the distance between the two boxes is the Euclidean distance between the tracker of the box and the recorded tracker of the GV. Please note, the trackers are not visible to the learner during the study.\\
+Angle-based accuracy measurements assess the discrepancy in orientation between the body parts and box of the learner and the GV. The angle is measured in degrees. The calculation of the angle-based measurements complies with the calculations of the distance-based measurements. This means, the angle between the corresponding trackers are measured. To conclude: distance-based measurements assess the positioning's error, angle-based measurements assess the error in orientation.
+
+\subsection{(ii) Ergonomic Measurements}
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=\textwidth]{figures/riskMeasurements.png}
+	\caption[Risk Measurement calculation.]{Calculation of the Risk Measurements. Top left: support base, top right: squat, bottom left: upright stance, bottom right: box near body}
+	\label{fig:rmCalc}
+\end{figure}
+The ergonomic measurements are the four risk measurements: support base, squat, upright stance, and hip-box distance.\\
+Support base is the distance between the feet, compare figure~\ref{fig:rmCalc} top left. For push and pull, lift and lower, turn and fold, pick and place each a window (see end of paragraph) in which the distance should be located is defined. The percentage of time the learner is inside the window is the outcome of the measurement. For a better understanding, imagine the following exemplenary  scenario: the window during push for the support base is 20cm-30cm. During the performance of push, the learner's feet distance was inside the window for 90 seconds. The whole performance of push lasted 100 seconds. The RM support base yields in a score of 90\%.\\
+The measurement for squat is the distance between the hip and floor, compare figure~\ref{fig:rmCalc} top right. It indicates if the learner bent the knees correctly and is applied in the sub-tasks lift and lower. A window is defined for squat, too. Calculations of the RM score of squat complies with the support base.\\
+Upright stance is the measurement of the spine bend, compare figure~\ref{fig:rmCalc} bottom left, which should be in a specific window, too. For upright stance, an additional tracker is applied to the back of the student in the area of the Thorakolumbale transition, around 20cm kranial of articulatio lumbosacralis\footref{fn:latin}, compare figure~\ref{fig:tracker_placement} right. The angle of spine bend is the angle between the upright vector, and the vector of the upper hip tracker\footnote{Implementation for the calculations of the spine bend angle informed by Tanveer Singh Mahendra.}. Upright stance is applied for push and pull, lift and lower, turn and fold. The bend angle during pick and place depends heavily on the box's position on the table and thereby varies. Because of this variation, a window cannot be defined for pick and place, and though the RM upright stance is not applied to pick and place. Calculations of the RM score of upright stance complies with the calculations of the preceding RM.\\
+Hip-box distance is calculated by the distance between the hip tracker and the box tracker, compare figure~\ref{fig:rmCalc} bottom right. It is applied for the sub-task carry. The calculations comply with the preceding RMs. The limitation of hip-box distance is that the measurement is influenced by the circumference of the learner's torso. A formative test of hip-box distance was not possible due to the COVID-19 pandemic.\\
+
+The definitions of windows for the RMs were planned to be done by an proffesional with reasonable knowledge about ergonomics. Unfortunately, because of the COVID-19 pandemic it was not possible to invite the professional to the laboratory defining the windows for the RMs. This means for the pilot study, that the RMs cannot be evaluated.
+
+\subsection{(iii) Focus Measurement}
+\label{sec:rayTrace}
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=\textwidth]{figures/focus.png}
+	\caption[focus]{focus}
+	\label{fig:focusAssessment}
+\end{figure}
+The virtual room the learner sees in \exgo\ is filled with tables, boxes, GVs and virtual copies of the learner. To assess on what the learner is focusing during the movements, every object was given a name. In every frame, raytracing is performed. The rays' origin is the HDM and expands straight forward. The name of the object first hit by the ray is written into the log file. The name is coded with the position 0-4 (see positions in firgure~\ref{fig:learner_positions}) and an object identifier (box, table, scale, GV, learner), compare figure~\ref{fig:focusAssessment}. A test revealed a systematic error by pointing too high. To correct the discrepancy, colliders of the objects were increased. The tables' and scales' collider hight is increased by 20cm. The box colliders height is doubled. The learners' and GVs' avatar were wrapped into a capsule collider with a hight 200cm of and a radius of 30cm. The values were determined by experimentation. To test the values, all sub-tasks were performed and the object which is hit by the ray is displayed. The displayed name complied with the object in focus at nearly any point in time. Using an eye-tracker would increase the accuracy but was available.
+
+
+\subsection{(iv) Time Measurement}
+The animation speed of the GV is determined by the distance between the learner and the GV (speed-mechanic). A slower played GV animation yields in a longer task comletion time. For the ease of understanding, please consider the following two definitions: the time the task lasts without the speed-mechanic is called task norm duration (TND). The time the learner  needs more than the TND to fulfil the task is called over task norm duration (OTND.)\\
+OTND can draw conclusions about the learner's position in relation to the GV.
+The tasks differ in the amount of time to be performed:
+\begin{itemize}
+	\item TND task 1: 172128ms
+	\item TND task 2: 189040ms
+	\item TND task 3: 176668ms
+\end{itemize}
+The OTND can be applied to specific sub-tasks, too. This measurement will mainly be used in the evaluation for triangulation.
+
+\section{Qualitative Data Aquisition}
+\label{sec:quali_logging}
+The qualitative data assess during a study session relies on one questionnaire after each session (after session questionaire) and a semi-structured interview after all three sessions (semi-structured interview). The qualitative data assessment aims to assess the participant's impressions and opinions about the VPs. In the questionnaires, a different wording is applied to ease understanding. For example, the GV is called virtual teacher. 
+
+\subsection{After Session Questionaire}
+The after session questionnaire starts with a question about the subjective overall performance of the learner. 
+\begin{itemize}
+	\item[Q1:] How accurate did your movements comply with the virtual teacher?
+	\item[A:] Likert scale from one (very good) to 7 (very poor)
+	\item Linked research questions: RQ1.1.1-3, RQ1.4
+	\item Data triangulation for (1-4,6)
+\end{itemize}
+The answer to this question gives insights into how accurate the participant assesses the performed movements. Furthermore, this question can be used to determine if the qualitative accuracy complies with the participants' subjective opinion. The next question aims to assess the user's subjective performance for the sub-tasks. The participant is asked to fill in a table. Each line represents a sub-task. Each sub-task can be rated on a Likert scale from 1 (very good) to 7 (very poor).
+\begin{itemize}
+	\item[Q2:] During the task there were several smaller reoccurring movements, like pulling or lifting the box. Please rate these smaller movements, to what extend you could follow the movements: 1 (very good) to 7 (very poor).
+	\item[A:] Likert scale from 1 (very good) to 7 (very poor) for each sub-task.
+	\item Linked resarch questions: RQ1.1.1-3, RQ1.4
+	\item Triangulation for (1-4,5,6)
+\end{itemize}
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.6\textwidth]{figures/sub-task-rating.png}
+	\caption[Rating template for the sub-tasks]{Rating template for the sub-tasks.}
+	\label{fig:subtaskrating}
+\end{figure}
+Beside the objective opition about the participants performance, the answers of this question can be used to compare with the qualitative data. Question three aims to assess the subjective accuracy of the participants body parts.
+\begin{itemize}
+	\item[Q3:] Please rate to what extend you think you could align your body parts with the teachers body parts: 1 (very good) to 7 (very poor). 
+	\item[A:] Likert scale from 1 (very good) to 7 (very poor) for each body part.
+	\item Linked resarch questions: RQ1.1.1-3, RQ1.4
+	\item Triangulation for (1-4,5,6)
+\end{itemize} 
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.6\textwidth]{figures/body-parts-acc.png}
+	\caption[Rating template for the body parts]{Rating template for the body parts.}
+	\label{fig:bodypartsacc}
+\end{figure}
+This question assesses how good or bad the participant could percept the body parts of the GV. The last question is not handed to the participant. It serves as the basis for a subsequent semi-structured interview question. It gives the possibility to dig into extreme values of the questions answered before and in any incidences that occurred during the task's performance.
+\begin{itemize}
+	\item[Q4:] (As interview question) Did you have problems to follow the instructions? 
+	\begin{itemize}
+		\item E.g. because you could not see some body parts?
+		\item E.g. bad perception related to the perspective?
+		\item Go into extreme values of this questionnaire! 
+		\item Address critical incidences!
+	\end{itemize}
+	\item[A:] Take down of participants statements.
+\end{itemize}
+
+\subsection{Semi-Structured Interview}
+After all three sessions done, the participant is interviewed. The interview is semi-structured. The guideline contains seven main questions, partly with additional hints to dig deeper or lower the participant's entry threshold to start reporting.
+\begin{itemize}
+	\item[Q5:] You saw three visual perspectives: ego-centric, exo-centric and the combination. What do you think about these perspectives?
+	\begin{itemize}
+		\item entry question, encourage participant to talk frank, address interesting mentions
+	\end{itemize}
+	\item[] Linked research question: RQ1.4
+	
+	\item[Q6:] Prioritise the perspectives by to what extend you think you could follow the movements. (1 best to 3 worst) 	
+	\begin{itemize}
+		\item Why did you decide for the prioritisation?
+	\end{itemize}
+	\item[] Linked research question: RQ1.4
+	
+	\item[Q7:] Imagine you want to learn a movement in VR. Which perspective would you use for that?
+	\begin{itemize}
+		\item -	Or would you use a totally different one?
+	\end{itemize}
+	\item[] Linked research question: RQ1.4
+	
+	\item[Q8:] In which of the three perspectives was the easiest to understand? 
+	\begin{itemize}
+		\item Was there a perspective that confused you?
+		\item Was there a perspective you did not understand right away?
+		\begin{itemize}
+			\item What do you think caused the confusion?
+		\end{itemize}
+	\end{itemize}
+	\item[] Linked research question: RQ1.4
+	
+	\item[Q9:] What do you think are the advantages and disadvantages of the perspectives?
+	\item[] Linked research question: RQ1.4
+	
+	\item[Q10:] Could you see some body parts better or worse in the perspectives?
+	\begin{itemize}
+		\item What about your legs, arms, back?
+		\item Could you detect that during lift and lower you should squat?
+		\item Could you detect that you should step back during push and pull?
+	\end{itemize}
+	\item[] Linked research question: RQ1.4
+	
+	\item[Q11:] Did you miss a feature?
+	\begin{itemize}
+		\item Dig for improvements for \exgo or experiment design.
+	\end{itemize}
+	
+	\item[Q12:] (Space to ask for critical incidences if any occurred.)
+\end{itemize}
+
+\section{Limitations}
+\label{sec:limitations}
+\exgo and the study is designed for a task that includes the handling of physical load. If the outcome can be applied to movements without a physical load is questionable. Additionally, the cannot be assuemd to stand for other physical load that are diffrent in shape and weight. Furthermore, the exo-centric GV sometimes walk through artefacts (table, scale) of other GVs, which can confuse the study participant. The movements are not recorded by a professional, errors in ergonomic movements are possible. Lastly, only a small number of participants participated in the formative tests to evaluate partial aspects of \exgo. Especially, the hip-box distance is not tested because multiple persons with different physique would be necessary.\\
+
+\section{Study Procedure}
+\label{sec:procedure}
+\exgo\ is now complete and the elements of the experiment design can be assembled with the technological elements of \exgo to form the final study procedure.
+As soon as the participant enters the room, the participant receives a warm welcome to feel comfortable.\\
+The process starts with a Welcome letter (appendix C), followed by the informed consent and a demographic questionnaire. In the meantime, \exgo\ is set up by choosing the condition, set the gender of the participant as well as the log is configured with the participant ID and task id. After the demographic questionnaire, a spoken explanation about what is about to happen is given. Then the trackers are attached to the participant. The calibration process is explained: looking in the mirror and extend the arms. An explanation of the perspective is provided. Then, the first session is started. \exgo\ gets started, the cameras and screen recording are set up, and the participant gets the HMD. The participant is asked to stand in front of the mirror to calibrate. For calibration, the key C is pressed at the PC. To identify the camera recordings, a sign is held into the cameras. The task is started with the key S. During the session, attantion is payed to the cable of the HMD to avoid stumble of the participant. Furthermore, the participant is observed. After the session ended, the HMD is removed. The participant fills in the after session questionnaire. Session two and three are conducted likewise. After all three sessions, the trackers are removed. The participant is interviewed. The payment is given and the receipted singed. At the very end, the participant is thanked and said goodby. If appeares, doorstep talk is appreciated.
+
