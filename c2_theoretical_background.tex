@@ -4,7 +4,7 @@ This chapter provides the theoretical background of Virtual Reality, Motor Learn
 
 \section{Virtual Reality}
 \label{section:mixed_reality}
-Milgram and Kishinho~\cite{mrcontinuum} describe Mixed Reality for visual displays on a continuum. Virtual Reality is purely digital, and thereby the environment is blocked entirely. In Augmented Reality, the environment is visible and augmented with digital elements. During Motor Learning, the visual perception of the own body is desirable, because it is the most exact representation of the own body. Thereby, the approach of augmenting the real-world body with a virtual guidance visualisation is promising. However, today's AR-technology provides a small field of view. A solution to this could be the video see-through technology, but it is limited by latency and distortion~\cite{max}.\\
+Milgram and Kishinho~\cite{mrcontinuum} describe Mixed Reality (MR) for visual displays on a continuum. Virtual Reality (VR) is purely digital, and thereby the environment is blocked entirely. In Augmented Reality, the environment is visible and augmented with digital elements. During Motor Learning, the visual perception of the own body is desirable, because it is the most exact representation of the own body. Thereby, the approach of augmenting the real-world body with a virtual guidance visualisation (GV) is promising. However, today's AR-technology provides a small field of view. A solution to this could be the video see-through technology, but it is limited by latency and distortion~\cite{max}.\\
 The body's perception can also be achieved by tracking the learner's body and render it over the learner's physical body. Though, the visual perception of the learner's body can be established in VR. Consequentially, this work will focus on Motor Learning in Virtual Reality.
 
 \section{Motor Learning}
@@ -40,13 +40,13 @@ The basic idea of \textit{measures of time and speed} is that a performer who ca
 	\caption[Centricity continuum]{Centricity continuum by Wang and Milgram~\cite{centricitycontinuum}}
 	\label{fig:ego-exo-continuum}
 \end{figure}
-Wang and Milgram~\cite{centricitycontinuum} describe visual perspectives (VP) by the \textit{centricity continuum}, compare figure~\ref{fig:ego-exo-continuum}. On the left extreme on the continuum, the ego-centric VP is located, in literature also called first-person perspective (1PP). On the right extreme, is the exo-centric VP, in literature also called third-person perspective (3PP). The middle part represents tethered VP. By moving from the left to the right, the so-called \textit{tethering distance} increases. The \textit{tethering distance} describes the distance of the anchor point of the eyes to the object in question. In this master's thesis, the "object in question" is the human-shaped guidance visualisation (avatar). VPs can be clustered into three classes: ego-centric VPs (g-class), exo-centric VPs (x-class) and VPs that contain both ego-centric and exo-centric VPs (gx-class). There are five possible VPs:%bild ego und exo als beispiel zum verständnis?
+Wang and Milgram~\cite{centricitycontinuum} describe visual perspectives (VP) by the \textit{centricity continuum}, compare figure~\ref{fig:ego-exo-continuum}. On the left extreme on the continuum, the ego-centric VP is located, in literature also called first-person perspective (1PP). On the right extreme, is the exo-centric VP, in literature also called third-person perspective (3PP). The middle part represents tethered VP. By moving from the left to the right, the so-called \textit{tethering distance} increases. The \textit{tethering distance} describes the distance of the anchor point of the eyes to the object in question. In this master's thesis, the "object in question" is the human-shaped guidance visualisation (avatar). VPs can be clustered into three classes: ego-centric VPs (g-class), exo-centric VPs (x-class) and VPs that contain both ego-centric and exo-centric VPs (gx-class). Without the usage of additional perpsective influencing artefacts like mirrors, cameras or screens, there are five possible VPs:
 \begin{itemize}
-	\item \textbf{Ego-centric}: the teachers avatar is located inside the learners avatar. The learner sees the GV inside the own body, compare figure~\ref{fig:perspectives} top left.
+	\item \textbf{Ego-centric}: the teachers avatar is located inside the learners avatar. The learner sees the GV inside the own body, compare figure~\ref{fig:perspectives} top left and figure~\ref{fig:ego}.
 	\item \textbf{Purely exo-centric}: the teachers avatar is loacted outside the learners avatar. The learner sees the GV, e.g. in front of him/her, compare figure~\ref{fig:perspectives} top middle.
-	\item \textbf{Augmented exo-centric}: the teachers avatar is located outside the learners avatar. Additionally, a virtual copy of the learners avatar is located inside the teachers avatar, compare figure~\ref{fig:perspectives} bottom middle.
-	\item \textbf{Purely ego \& exo-centric}: the combination of purely ego-centric VP and purely exo-centric VP. The learner sees the guidance visualisation as well as inside and outside of the own body, compare figure~\ref{fig:perspectives} top right.
-	\item \textbf{Ego \& augmented exo-centric}: the combination of the ego-centric VP and the augmented exo-centric VP; the learner sees the guidance visualisation inside the own body, as well as outside. Additionally, a virtual copy of the learner is located inside the exo-centric guidance visualisation, compare figure~\ref{fig:perspectives} bottom right.	
+	\item \textbf{Augmented exo-centric}: the teachers avatar is located outside the learners avatar. Additionally, a virtual copy of the learners avatar is located inside the teachers avatar, compare figure~\ref{fig:perspectives} bottom middle and figure~\ref{fig:exo}.
+	\item \textbf{Purely ego \& exo-centric}: the combination of purely ego-centric VP and purely exo-centric VP. The learner sees the GV as well as inside and outside of the own body, compare figure~\ref{fig:perspectives} top right.
+	\item \textbf{Ego \& augmented exo-centric}: the combination of the ego-centric VP and the augmented exo-centric VP; the learner sees the GV inside the own body, as well as outside. Additionally, a virtual copy of the learner is located inside the exo-centric GV, compare figure~\ref{fig:perspectives} bottom right and figure~\ref{fig:egoexo}.	
 \end{itemize}
 \begin{figure}[htb]
 	\centering
@@ -65,81 +65,66 @@ Muckell et al.~\cite{muckell} identifyed four main features which are common in 
 
 \section{Related Work: Motor Learning in Virtual Reality}
 \label{section:related_work}
-Training movements in Virtual Reality was investigated previously in several works. The preceding seminar thesis provided an overview over 23 (compare table~\ref{tab:rw_overview}) of these works and evaluated six of them in detail: Tai Chi Trainer by Chua et al.~\cite{thaichichua}, YouMove by Anderson et al.~\cite{YouMove}, VR Dance Trainer by Chan et al.~\cite{vrdancetrainer}, OneBody by Hoang et al.~\cite{onebody}, LightGuide by Sodhi et al.~\cite{lightguide} and Pyhsio@Home by Tang et al.~\cite{physioathome}. Special attention was paid to the visual perspective, task, guidance visualisation and their independent and dependent variables they used in their investigations. Finally, the results of these works were concluded. An overview is depicted in table~\ref{tab:rw_overview_detail}.
-
-\begin{table}[]
-	\begin{tabularx}\textwidth{@{}XXX@{}}
+\begin{table}[H]
+	\begin{tabularx}\textwidth{@{}XXXX@{}}
 		\toprule
-		g-class & x-class & gx-class \\ \midrule
-		AR-Arm \cite{ararm} & MotionMA \cite{motionma} & OneBody \cite{onebody} \\
-		Just Follow Me \cite{justfollowme} & YouMove \cite{YouMove} & LightGuide \cite{lightguide} \\
-		Gohstman \cite{ghostman} & VR Dance Trainer \cite{vrdancetrainer} & MR Dance Trainer \cite{mrdancetrainer} \\
-		Stylo and Handifact \cite{stylo} & Physio@Home \cite{physioathome} & Free Throw Simulator \cite{freethrowsimulator} \\
-		GhostHands \cite{ghosthands} & OutSide me \cite{outsideme} & Training Physical Skill \cite{trainingphysicalskills} \\
-		& E-Learning Martial Arts \cite{elearningma}    & SleeveAR \cite{sleevear} \\
-		& My Tai-Chi \cite{mythaichicoaches} & Tai Chi Trainer \cite{thaichichua}\\
-		& Performance Training \cite{performancetraining} & \\
-		& RT Gestrue   Recognition \cite{rtgesturerecognistion} & \\
-		& KinoHaptics \cite{kinohaptics} & \\
-		& TIKL \cite{tikl} & \\ \bottomrule
+		g-class & x-class & g-class and x-class & gx-class \\ \midrule
+		AR-Arm \cite{ararm} & MotionMA \cite{motionma} & OneBody \cite{onebody} & Tai Chi Trainer \cite{thaichichua} \\
+		Just Follow Me \cite{justfollowme} & YouMove \cite{YouMove} & LightGuide \cite{lightguide} & SleeveAR \cite{sleevear} \\
+		Ghostman \cite{ghostman} & VR Dance Trainer \cite{vrdancetrainer} & MR Dance Trainer \cite{mrdancetrainer} & \\
+		Stylo Handifact \cite{stylo} & Physio@Home \cite{physioathome} & Throw Simulator \cite{freethrowsimulator} & \\
+		GhostHands \cite{ghosthands} & OutsideMe \cite{outsideme} & Training Phys. Skill \cite{trainingphysicalskills} & \\
+		& E-Learning MA \cite{elearningma} &  &  \\
+		& My Tai Chi \cite{mythaichicoaches}  & &\\
+		& Perform. Training \cite{performancetraining} & &\\
+		& RT Gestrue Recognition \cite{rtgesturerecognistion} & &\\
+		& KinoHaptics \cite{kinohaptics} & &\\
+		& TIKL \cite{tikl} & &\\ \bottomrule
 	\end{tabularx}
 	\caption[Overview seminar evaluation]{Overview of related work divided by perspective and task}
 	\label{tab:rw_overview}
 \end{table}
 
-\begin{table}[]
-	\begin{tabularx}{\textwidth}{@{}X|XXXXXX@{}}
-			\toprule
-			& Tai Chi Trainer \cite{thaichichua}   & YouMove \cite{YouMove} & VR Dance Trainer \cite{vrdancetrainer} & OneBody \cite{onebody} & LightGuide \cite{lightguide} & Physio@ Home \cite{physioathome} \\ \midrule
-			Perspective &
-			Exo-centric,\newline Ego \& augmented exo-centric &
-			Exo-centric &
-			Exo-centric &
-			Ego-centric,\newline exo-centric &
-			Ego-centric,\newline exo-centric &
-			Exo-centric \\ 
-			Task & Tai Chi & Dance (Ballet), abstract & Dance (HipHop)   & Martial Arts         & Abstract   & Shoulder rehab \\ 
-			GV   & Avatar, \newline wireframe & Stick figure,\newline avatar     & Avatar           & Stick figure,\newline avatar & Indicators & Indicators     \\ 
-			Variable &
-			Perspectives,\newline performance &
-			VR/video,\newline performance &
-			VR/video,\newline performance &
-			Training method,\newline performance &
-			Visualisations,\newline perspectives,\newline performance &
-			Visualisations,\newline performance \\ 
-			Results &
-			No \newline difference in performance &
-			VR better than video &
-			VR better than video &
-			Ego better than exo &
-			Ego better then exo &
-			Multi view better than single view \\ 
-			\bottomrule
-	\end{tabularx}
-	\caption[Detailed analysis of related work in seminar thesis.]{Detailed seminar thesis evaluation.}
-	\label{tab:rw_overview_detail}
-\end{table}
-
-These works inform this work in various aspects. Chua et al. used the ego \& augmented exo-centric visual perspective, Hoang et al. and Sodhi et al. the ego-centric visual perspective. These visual perspectives proved to be suited for the evaluation of Motor Learning in VR and is adopted for the proposed study design, compare section~\ref{section:visual_perspectives}. Furthermore, Chan et al. and Chua et al. used high realistic avatars as guidance visualisation, which are used in the proposed study design, compare seminar thesis chapter 3.3. Additionally, recent research indicates that high realism avatars outperform abstract avatars~\cite{max,perspectivematters}. All authors used a performance measure to evaluate the performed movements of the participants of their studies. Primarily the distance-based measures informed the measures used in the proposed study design\\%compare figure ??? yxc
-The above mentioned works do not use the relatively new technology of Vive Trackers in combination with Inverse Kinematics (IK, see project report chapter 2.1 and 2.2). Sra et al.~\cite{samesetup} used this technology in 2018 for their system Your Place and Mine to render human-shaped avatars.\\
-The results of related work yielded no clear conclusion about the influence of the perspectives on motor learning. Chua et al. found no difference in the performance between the visual perspectives, Anderson et al. and Chan et al. found out that their exo-centric visual perspectives in Virtual Reality outperform traditional video guidance. Hoang et al. and Sodhi et al. conclude that the ego-centric perspective outperforms the exo-centric visual perspective. Nevertheless, an investigation of how the visual perspective influences motor learning was not investigated. Recently, in December 2020, Yu et al.~\cite{perspectivematters} conducted three independent studies to close this gap. In the first study, Yu et al. compared the ego-centric visual perspective and a 2D-mirror for single arm movements. In the second study, they compared the ego-centric and exo-centric visual perspective for Yoga. In the third study, they compared the ego-centric visual perspective with a 3D-mirror for arm movements. Yu et al. conclude their findings in a design guideline for systems training Motor Learning in Virtual Reality: use the ego-centric visual perspective if the type of motion allows, consider alternatives for other types of motions, ibidem. In all three studies, the ego-centric visual perspective outperformed the other perspectives if the movement was completely visible from the ego-centric visual perspective. This work, in contrast, focuses on full-body movements that include the handling of physical load. Furthermore, this work provides a third visual perspective, where the ego-centric and exo-centric visual perspective is combined.
+Training movements in Virtual Reality were investigated previously in several works. An overview differentiated by the VP the reasearchers used to train movements is provided in~\ref{tab:rw_overview}. AR-Arm~\cite{ararm}, Just Follow Me~\cite{justfollowme}, Ghostman~\cite{ghostman}, Stylo and Handifact~\cite{stylo} and GhostHands~\cite{ghosthands} used the ego-centric VP. MotionMA~\cite{motionma}, YouMove~\cite{YouMove}, VR Dance Trainer~\cite{vrdancetrainer}, Physio@Home~\cite{physioathome}, OutsideMe~\cite{outsideme}, E-learning Martial Arts~\cite{elearningma}, My Tai-Chi coaches~\cite{mythaichicoaches}, Performance Training~\cite{performancetraining}, Real Time Gesture Recognition~\cite{rtgesturerecognistion}, KinoHaptics~\cite{kinohaptics} and TIKL~\cite{tikl} used a VP from the g-class. There are also works that used to train movements in g-class and x-class, like OneBody~\cite{onebody}, LightGuide~\cite{lightguide}, Mixed Reality Dance Trainer~\cite{mrdancetrainer}, Free Throw Simulator~\cite{freethrowsimulator} and Training Physical Skills~\cite{trainingphysicalskills}. It is little research done for movement training in the gx-class, for example Tai Chi Trainer~\cite{thaichichua} and SleeveAR~\cite{sleevear}.\\
+The task which the refferred works use araise from the fields of dancing~\cite{YouMove,vrdancetrainer,outsideme,performancetraining,mrdancetrainer}, sports~\cite{freethrowsimulator,trainingphysicalskills}, rehabilitation~\cite{motionma,physioathome,kinohaptics,sleevear,veimprovesml}, arts~\cite{ararm,justfollowme,stylo,elearningma,mythaichicoaches,rtgesturerecognistion,onebody,thaichichua} and others~\cite{tikl,lightguide}. None of them include the ergonomic handling of a physical load, but sometimes include physical artefacts like a ball (e.g. Free Throw Simulator~\cite{}) or chop sticks (Ghostman~\cite{ghostman}). Also none include locomotional movements.\\
+The body parts that are included in the above mentioned task vary, too. For example, \cite{YouMove, thaichichua,onebody,vrdancetrainer} full body movements are taken into consideration, while \cite{ararm,sleevear,ghosthands} uses arm movements.\\
+The guidance visualisations which are used to train movements are stick figures~\cite{onebody,YouMove,vrdancetrainer,performancetraining}, wireframes\cite{thaichichua,mrdancetrainer}, human-shaped avatars\cite{thaichichua,vrdancetrainer,trainingphysicalskills,mythaichicoaches} and indicators~\cite{ararm,physioathome,sleevear,ghostman}.\\
+To determine to what extend the movements of the learner matcher the GV, different measures are applied. Most common are performance measures based on the accuracy of the performend movements (e.g.~\cite{YouMove,thaichichua,vrdancetrainer,onebody,lightguide,physioathome}) and the time related measurements like the task completion time (e.g.~\cite{lightguide,onebody}).\\
+How the perspective influences the learners performance is sparsely investigated. Recently, in December 2020, Yu et al.~\cite{perspectivematters} conducted three independent studies to close this gap. In the first study, Yu et al. compared the ego-centric visual perspective and a 2D-mirror for single arm movements. In the second study, they compared the ego-centric and exo-centric visual perspective for Yoga. In the third study, they compared the ego-centric visual perspective with a 3D-mirror for arm movements. Yu et al. conclude their findings in a design guideline for systems training Motor Learning in Virtual Reality: use the ego-centric visual perspective if the type of motion allows, consider alternatives for other types of motions, ibidem. In all three studies, the ego-centric visual perspective outperformed the other perspectives if the movement was completely visible from the ego-centric visual perspective. \cite{onebody,lightguide} compared their ego-centric VP with their exo-centric VP and for the task they used, the ego-centric VP outperformed the exo-centric VP. \cite{YouMove,vrdancetrainer} compared the movment learning in VR with traditional video based movement learning. In both cases, VR movement learning outperformed video movement learning.\\
 
 \subsection{Research Contribution Statement}
-\label{delimination_contribution}
-\todo{new papers occured, read them, then write this statement. notes:}
-what is done:  v
-comparing ego-centric with exo-centric video.
-comparing ego-centric with exo-centric and the combination, but yielded to no result, because old paper and old pc
-comparing with mirrors,
-comparing isolated body parts
-everyone made his live easy by just looking at stationary movements, mostly containing only some body parts.
-new: nobody did fullbody movements with locomotion. ego-centric locomotion motion guidance is completely new. 
-related work only investigated on stationary movements. but motor learning is not stationary. body parts is also not stationary.
-real-world relation poor because of arts dance or abstract. my work is the first one haveing really a task that is reasonable!\\
-Previous work investigated the differences between the perspectives, but:
-To my knowledge, there is no investigation on full body movements that include locomotion. Furthermore, there are on investigations that include the handling of physical load.
-Perivous works compared ego-centric Motor Learning with video learning\cite{YouMove,vrdancetrainer}, augemnted mirrors\cite{perspectivematters,onebody}.
-The conduction of the proposed study will produce data that serves as a reasonable basis for designers of VR Motor Learning systems choosing a suitable perspectives. This is achieved by an Empirical Research Contribution. The empirical data is gathered by a comparative study between the ego-centric visual perspective, the exo-centric visual perspective and the combination. As novelty, the task includes handling of physical load which consists of the elemental tasks of manual material handling. This allows an evaluation of the elemental tasks per visual perspective and can give insights which perspective is suited for specific tasks.\\
-Additionaly, an artifact contribution is provided by the ego-centric guidance of locomotion movements.
+\label{sec:delimination_contribution}
+As depicted in the last section, Motor Learning in the gx-class VPs is rarely investigated. Furthermore, Motor Learning that includes the handling of a physical load in VR in different VPs was not part of investigations. Additionally, previous works used stationary task in the ego-centric VP.\\
+The proposed experiment in this master's thesis will provide an empirical contribution by increasing the empicial evidence of how the VP influences Motor Learning by guiding full body movements in three VP: ego-centric, exo-centric and the pure combination of them. Furthermore, empirical evidence is generated for Motor Learning including the handling of a physical load. An artifact contribution is provided by presenting a method for guiding locomotion movements in the ego-centric VP.\\
+
+The generated data of the proposed experiment will help designers of VR Motor Learning systems to choose a reasonable perspective for their project.
 
 
+%The preceding seminar thesis provided an overview over 23 (compare table~\ref{tab:rw_overview}) of these works and evaluated six of them in detail: Tai Chi Trainer by Chua et al.~\cite{thaichichua}, YouMove by Anderson et al.~\cite{YouMove}, VR Dance Trainer by Chan et al.~\cite{vrdancetrainer}, OneBody by Hoang et al.~\cite{onebody}, LightGuide by Sodhi et al.~\cite{lightguide} and Pyhsio@Home by Tang et al.~\cite{physioathome}. Special attention was paid to the VP, task, GV and their independent and dependent variables they used in their investigations. Finally, the results of these works were concluded. An overview is depicted in table~\ref{tab:rw_overview_detail}.
+
+%These works inform this work in various aspects. Chua et al. used the ego \& augmented exo-centric VP, Hoang et al. and Sodhi et al. the ego-centric visual perspective. These visual perspectives proved to be suited for the evaluation of Motor Learning in VR and is adopted for the proposed study design, compare section~\ref{section:visual_perspectives}. Furthermore, Chan et al. and Chua et al. used high realistic avatars as guidance visualisation, which are used in the proposed study design, compare seminar thesis chapter 3.3. Additionally, recent research indicates that high realism avatars outperform abstract avatars~\cite{max,perspectivematters}. All authors used a performance measure to evaluate the performed movements of the participants of their studies. Primarily the distance-based measures informed the measures used in the proposed study design\\%compare figure ??? yxc
+%The above mentioned works do not use the relatively new technology of Vive Trackers in combination with Inverse Kinematics (IK, see project report chapter 2.1 and 2.2). Sra et al.~\cite{samesetup} used this technology in 2018 for their system Your Place and Mine to render human-shaped avatars.\\
+%The results of related work yielded no clear conclusion about the influence of the perspectives on motor learning. Chua et al. found no difference in the performance between the visual perspectives, Anderson et al. and Chan et al. found out that their exo-centric visual perspectives in Virtual Reality outperform traditional video guidance. Hoang et al. and Sodhi et al. conclude that the ego-centric perspective outperforms the exo-centric visual perspective. Nevertheless, an investigation of how the visual perspective influences motor learning was not investigated.  This work, in contrast, focuses on full-body movements that include the handling of physical load. Furthermore, this work provides a third visual perspective, where the ego-centric and exo-centric visual perspective is combined.
+
+%VR already proved to be a suitable environment for Motor Learning for tasks like dancing~\cite{YouMove,vrdancetrainer,outsideme,performancetraining,mrdancetrainer}, sports~\cite{freethrowsimulator,trainingphysicalskills}, Rehabilitation~\cite{motionma,physioathome,kinohaptics,sleevear,veimprovesml}, arts~\cite{ararm,justfollowme,stylo,elearningma,mythaichicoaches,rtgesturerecognistion,onebody,thaichichua} and others~\cite{tikl,lightguide}.
+ 
+
+
+
+%\todo{new papers occured, read them, then write this statement. notes:}
+%what is done:  v
+%comparing ego-centric with exo-centric video.
+%comparing ego-centric with exo-centric and the combination, but yielded to no result, because old paper and old pc
+%comparing with mirrors,
+%comparing isolated body parts
+%everyone made his live easy by just looking at stationary movements, mostly containing only some body parts.
+%new: nobody did fullbody movements with locomotion. ego-centric locomotion motion guidance is completely new. 
+%related work only investigated on stationary movements. but motor learning is not stationary. body parts is also not stationary.
+%real-world relation poor because of arts dance or abstract. my work is the first one haveing really a task that is reasonable!\\
+%Previous work investigated the differences between the perspectives, but:
+%To my knowledge, there is no investigation on full body movements that include locomotion. Furthermore, there are on investigations that include the handling of physical load.
+%Perivous works compared ego-centric Motor Learning with video learning\cite{YouMove,vrdancetrainer}, augemnted mirrors\cite{perspectivematters,onebody}.
+%The conduction of the proposed study will produce data that serves as a reasonable basis for designers of VR Motor Learning systems choosing a suitable perspectives. This is achieved by an Empirical Research Contribution. The empirical data is gathered by a comparative study between the ego-centric visual perspective, the exo-centric visual perspective and the combination. As novelty, the task includes handling of physical load which consists of the elemental tasks of manual material handling. This allows an evaluation of the elemental tasks per visual perspective and can give insights which perspective is suited for specific tasks.\\
+%Additionaly, an artifact contribution is provided by the ego-centric guidance of locomotion movements.
+
+%direct comparison not even in tai chi chua
